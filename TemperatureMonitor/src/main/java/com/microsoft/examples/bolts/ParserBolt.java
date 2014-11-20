@@ -28,14 +28,20 @@ public class ParserBolt extends BaseBasicBolt {
     //Should only be one tuple, which is the JSON message from the spout
     String value = tuple.getString(0);
 
-    //Convert it from JSON to an object
-    EventHubMessage evMessage = gson.fromJson(value, EventHubMessage.class);
-    
-    //Pull out the values and emit as a stream
-    String timestamp = evMessage.TimeStamp;
-    int deviceid = evMessage.DeviceId;
-    int temperature = evMessage.Temperature;
-    collector.emit("hbasestream", new Values(timestamp, deviceid, temperature));
-    collector.emit("dashstream", new Values(deviceid, temperature));
+    //Deal with cases where we get multiple
+    //EventHub messages in one tuple
+    String[] arr = value.split("}");
+    for (String ehm : arr)
+    {
+        //Convert it from JSON to an object
+        EventHubMessage msg = new Gson().fromJson(ehm.concat("}"),EventHubMessage.class);
+
+        //Pull out the values and emit as a stream
+        String timestamp = msg.TimeStamp;
+        int deviceid = msg.DeviceId;
+        int temperature = msg.Temperature;
+        collector.emit("hbasestream", new Values(timestamp, deviceid, temperature));
+        collector.emit("dashstream", new Values(deviceid, temperature));
+    }
   }
 }
