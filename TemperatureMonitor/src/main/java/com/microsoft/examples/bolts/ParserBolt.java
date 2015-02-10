@@ -7,8 +7,10 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.json.JSONObject;
+
+// import com.google.gson.Gson;
+// import com.google.gson.GsonBuilder;
 
 public class ParserBolt extends BaseBasicBolt {
 
@@ -24,7 +26,6 @@ public class ParserBolt extends BaseBasicBolt {
   //Process tuples
   @Override
   public void execute(Tuple tuple, BasicOutputCollector collector) {
-    Gson gson = new Gson();
     //Should only be one tuple, which is the JSON message from the spout
     String value = tuple.getString(0);
 
@@ -34,12 +35,12 @@ public class ParserBolt extends BaseBasicBolt {
     for (String ehm : arr)
     {
         //Convert it from JSON to an object
-        EventHubMessage msg = new Gson().fromJson(ehm.concat("}"),EventHubMessage.class);
-
+        //EventHubMessage msg = new Gson().fromJson(ehm.concat("}"),EventHubMessage.class);
+        JSONObject msg=new JSONObject(ehm.concat("}"));
         //Pull out the values and emit as a stream
-        String timestamp = msg.TimeStamp;
-        int deviceid = msg.DeviceId;
-        int temperature = msg.Temperature;
+        String timestamp = msg.getString("TimeStamp");
+        int deviceid = msg.getInt("DeviceId");
+        int temperature = msg.getInt("Temperature");
         collector.emit("hbasestream", new Values(timestamp, deviceid, temperature));
         collector.emit("dashstream", new Values(deviceid, temperature));
     }
