@@ -40,42 +40,8 @@ public class DashboardBolt extends BaseBasicBolt {
       socket = IO.socket("http://localhost:3000");
       socket.connect();
     } catch(URISyntaxException e) {
-      //Assume we can connect for now
+      //Assume we can connect
     }
-
-    // // Connect to the DashHub SignalR server
-    // conn = new HubConnection("http://dashboard.azurewebsites.net/");
-    // // Create the hub proxy
-    // proxy = conn.createHubProxy("DashHub");
-    // // Subscribe to the error event
-    // conn.error(new ErrorCallback() {
-    //   @Override
-    //   public void onError(Throwable error) {
-    //     error.printStackTrace();
-    //   }
-    // });
-    // // Subscribe to the connected event
-    // conn.connected(new Runnable() {
-    //   @Override
-    //   public void run() {
-    //     System.out.println("CONNECTED");
-    //   }
-    // });
-    // // Subscribe to the closed event
-    // conn.closed(new Runnable() {
-    //   @Override
-    //   public void run() {
-    //     System.out.println("DISCONNECTED");
-    //   }
-    // });
-    // // Start the connection
-    // conn.start()
-    //   .done(new Action<Void>() {
-    //     @Override
-    //     public void run(Void obj) throws Exception {
-    //       System.out.println("Done Connecting!");
-    //     }
-    // });
   }
 
   //Process tuples
@@ -91,20 +57,5 @@ public class DashboardBolt extends BaseBasicBolt {
     obj.put("temperature", temperature);
     //Send it to the server
     socket.emit("message", obj);
-    // Gson gson = new Gson();
-    // try {
-    //   //Get the deviceid and temperature by field name
-    //   int deviceid = tuple.getIntegerByField("deviceid");
-    //   int temperature = tuple.getIntegerByField("temperature");
-    //   //Construct the SignalR message
-    //   SignalRMessage srMessage = new SignalRMessage();
-    //   srMessage.device = deviceid;
-    //   srMessage.temperature = temperature;
-    //   // send it as JSON
-    //   proxy.invoke("send", gson.toJson(srMessage));
-    // } catch (Exception e) {
-    //    // LOG.error("Bolt execute error: {}", e);
-    //    collector.reportError(e);
-    // }
   }
 }
