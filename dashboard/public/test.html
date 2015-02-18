@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test</title>
+    <style type="text/css">
+        .container {
+            background-color: #99CCFF;
+            border: thick solid #808080;
+            padding: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="message" />
+        <input type="button" id="sendmessage" value="Send" />
+        <input type="hidden" id="displayname" />
+        <ul id="discussion"></ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!--Add script to update the page and send messages.-->
+    <script type="text/javascript">
+        $(function () {
+          //Socket.io
+          var socket = io();
+          //send messages when button is clicked
+          $('#sendmessage').click(function() {
+            console.log('sending data: ' + $('#message').val());
+            socket.emit('message', $('#message').val());
+          });
+          //display messages sent by the server
+          socket.on('message', function(data) {
+            console.log('received data: ' + data);
+            var encodedMsg = $('<div />').text(JSON.stringify(data)).html();
+            // Add the message to the page.
+            $('#discussion').append('<li>' + encodedMsg + '</li>')
+          });
+        });
+    </script>
+</body>
+</html>
