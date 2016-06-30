@@ -28,7 +28,7 @@
   </property>
   <property>
     <name>hbase.zookeeper.quorum</name>
-    <value>zookeeper0.suffix,zookeeper1.suffix,zookeeper2.suffix</value>
+    <value>zk0-hbase,zk1-hbase,zk2-hbase</value>
   </property>
   <property>
     <name>hbase.zookeeper.property.clientPort</name>

@@ -12,6 +12,8 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -25,11 +27,12 @@ public class DashboardBolt extends BaseBasicBolt {
   private static String authority;
   private static String datasetsUri;
 
+  private static final Logger LOG = LoggerFactory.getLogger(DashboardBolt.class);
 
   //Declare output fields
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer) {
-    //no stream output - we talk directly to SignalR
+    //no stream output - we talk directly to socket.io
   }
 
   @Override
@@ -51,6 +54,7 @@ public class DashboardBolt extends BaseBasicBolt {
     int deviceid = tuple.getIntegerByField("deviceid");
     int temperature = tuple.getIntegerByField("temperature");
 
+    LOG.info("DeviceID is {}, temperature is {}", deviceid, temperature);
     //Create a JSON object
     JSONObject obj = new JSONObject();
     obj.put("deviceid", deviceid);

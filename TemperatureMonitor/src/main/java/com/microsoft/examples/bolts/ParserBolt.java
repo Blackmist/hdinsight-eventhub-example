@@ -8,11 +8,14 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // import com.google.gson.Gson;
 // import com.google.gson.GsonBuilder;
 
 public class ParserBolt extends BaseBasicBolt {
+  private static final Logger LOG = LoggerFactory.getLogger(ParserBolt.class);
 
   //Declare output fields & streams
   //hbasestream is all fields, and goes to hbase
@@ -28,7 +31,7 @@ public class ParserBolt extends BaseBasicBolt {
   public void execute(Tuple tuple, BasicOutputCollector collector) {
     //Should only be one tuple, which is the JSON message from the spout
     String value = tuple.getString(0);
-
+    LOG.info("Read tuple {} from stream.", value);
     //Deal with cases where we get multiple
     //EventHub messages in one tuple
     String[] arr = value.split("}");
@@ -41,6 +44,8 @@ public class ParserBolt extends BaseBasicBolt {
         String timestamp = msg.getString("TimeStamp");
         int deviceid = msg.getInt("DeviceId");
         int temperature = msg.getInt("Temperature");
+        LOG.info("Emitting device id {} with a temperature of {} and timestamp of {}", deviceid, timestamp, temperature);
+
         collector.emit("hbasestream", new Values(timestamp, deviceid, temperature));
         collector.emit("dashstream", new Values(deviceid, temperature));
     }

@@ -70,7 +70,7 @@ for(var i = 0; i < 10; i++)
 {
 	// Random temperature value
 	var temp = Math.floor(Math.random() * 90);
-	var payload = '{\"TimeStamp\":\"2015-02-10T14:43.05.00320Z\",\"DeviceId\":' + i + ',\"Temperature\":' + temp + '}';
+	var payload = '{\"TimeStamp\":\"2015-02-10T14:43.05.00320Z\",\"DeviceId\":\"' + i + '\",\"Temperature\":' + temp + '}';
 	console.log(payload);
 	// Send it
 	send_message(payload);
