@@ -8,22 +8,25 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+// For logging
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 // import com.google.gson.Gson;
 // import com.google.gson.GsonBuilder;
 
 public class ParserBolt extends BaseBasicBolt {
-  private static final Logger LOG = LoggerFactory.getLogger(ParserBolt.class);
+  private static final Logger LOG = LogManager.getLogger(ParserBolt.class);
 
   //Declare output fields & streams
   //hbasestream is all fields, and goes to hbase
-  //dashstream is just the device and temperature, and goes to the dashboard
+  //The default stream is just the device and temperature, and goes to the dashboard
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer) {
     declarer.declareStream("hbasestream", new Fields("timestamp", "deviceid", "temperature"));
-    declarer.declareStream("dashstream", new Fields("deviceid", "temperature"));
+    // Default stream
+    declarer.declare(new Fields("deviceid", "temperature"));
   }
 
   //Process tuples
@@ -47,7 +50,7 @@ public class ParserBolt extends BaseBasicBolt {
         LOG.info("Emitting device id {} with a temperature of {} and timestamp of {}", deviceid, timestamp, temperature);
 
         collector.emit("hbasestream", new Values(timestamp, deviceid, temperature));
-        collector.emit("dashstream", new Values(deviceid, temperature));
+        collector.emit(new Values(deviceid, temperature));
     }
   }
 }

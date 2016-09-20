@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- See http://logging.apache.org/log4j/2.x/manual/configuration.html 
+     for more information on Log4j configuration. -->
+<Configuration>
+  <Appenders>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Logger name="com.microsoft.examples" level="trace" additivity="false">
+      <AppenderRef ref="STDOUT"/>
+    </Logger>
+    <Root level="error">
+      <Appender-Ref ref="STDOUT"/>
+    </Root>
+  </Loggers>
+</Configuration>
