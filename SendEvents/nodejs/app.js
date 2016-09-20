@@ -3,12 +3,12 @@ var crypto = require('crypto');
 var moment = require('moment');
 
 // ServiceBus Namespace
-var namespace = 'servicebusnamespace';
+var namespace = 'YourNamespace';
 // Event Hub Name
-var hubname ='eventhubname';
+var hubname ='sensordata';
 // Shared access Policy name and key (from Event Hub configuration)
 var my_key_name = 'devices';
-var my_key = 'key';
+var my_key = 'YourKey';
 
 // Full URI to send messages to the hub
 var my_uri = 'https://' + namespace + '.servicebus.windows.net' + '/' + hubname + '/messages';

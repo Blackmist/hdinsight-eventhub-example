@@ -12,8 +12,10 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+// For logging
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -22,13 +24,14 @@ public class DashboardBolt extends BaseBasicBolt {
   //Socket.IO
   private Socket socket;
   private static String clientId;
-  private static String redirectUri;
-  private static String resourceUri;
-  private static String authority;
-  private static String datasetsUri;
+  private String dashboardUri;
 
-  private static final Logger LOG = LoggerFactory.getLogger(DashboardBolt.class);
+  private static final Logger LOG = LogManager.getLogger(DashboardBolt.class);
 
+  public DashboardBolt(String dashboardUri) {
+      LOG.info("Creating an instance of the DashboardBolt.");
+      this.dashboardUri = dashboardUri;
+  }
   //Declare output fields
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer) {
@@ -40,7 +43,7 @@ public class DashboardBolt extends BaseBasicBolt {
     //using Socket.io
     try {
       //Open a socket to your web server
-      socket = IO.socket("http://localhost:3000");
+      socket = IO.socket(this.dashboardUri);
       socket.connect();
     } catch(URISyntaxException e) {
       //Assume we can connect
