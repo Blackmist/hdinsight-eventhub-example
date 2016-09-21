@@ -5,4 +5,3 @@ Example of using Storm on HDInsight to read events from Event Hub, write events 
 
 See [http://azure.microsoft.com/en-us/documentation/articles/hdinsight-storm-sensor-data-analysis](http://azure.microsoft.com/en-us/documentation/articles/hdinsight-storm-sensor-data-analysis) for a walkthrough.
 
-Note: The document on azure.microsoft.com might lag behind this code update. It should be updated to talk about the current version of this example by noon 9/21/2016.
