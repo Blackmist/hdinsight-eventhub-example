@@ -47,11 +47,14 @@
          Do not use the 'normal' 0.10.0 storm-hbase
          component from Maven or other repositories
          as it expects HBase 0.98.4. -->
+    <!-- uncomment and set version -->
+    <!--
     <dependency>
       <groupId>org.apache.storm</groupId>
       <artifactId>storm-hbase</artifactId>
       <version>0.10.0.2.4.2.4-5</version>
     </dependency>
+    -->
     <dependency>
       <groupId>org.apache.hbase</groupId>
       <artifactId>hbase-common</artifactId>
