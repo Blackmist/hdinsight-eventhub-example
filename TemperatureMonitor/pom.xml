@@ -9,14 +9,43 @@
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <storm.version>0.10.0</storm.version>
+    <storm.version>1.0.1.2.5.3.0-37</storm.version>
+    <hadoop.version>2.7.2></hadoop.version>
     <storm.topology>org.apache.storm.flux.Flux</storm.topology>
   </properties>
+  <!-- Hortonworks repositories -->
   <repositories>
     <repository>
-      <id>central</id>
-      <name>Central Repository</name>
-      <url>http://repo.maven.apache.org/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+        <updatePolicy>never</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <id>HDPReleases</id>
+      <name>HDP Releases</name>
+      <url>http://repo.hortonworks.com/content/repositories/releases/</url>
+      <layout>default</layout>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+        <updatePolicy>never</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <id>HDPJetty</id>
+      <name>Hadoop Jetty</name>
+      <url>http://repo.hortonworks.com/content/repositories/jetty-hadoop/</url>
+      <layout>default</layout>
     </repository>
   </repositories>
   <dependencies>
@@ -26,6 +55,12 @@
       <version>${storm.version}</version>
       <!-- keep storm out of the jar-with-dependencies -->
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.storm</groupId>
@@ -39,22 +74,12 @@
       <version>${storm.version}</version>
     </dependency>
     <!-- Used to write to HBase on HDInsight -->
-    <!-- NOTE: This uses the storm-hbase component that 
-         comes with Storm on HDInsight 3.3 and 3.4. It 
-         is built to work with the version of HBase (1.1.x)
-         that is included with HBase on HDInsight 3.3
-         and 3.4. 
-         Do not use the 'normal' 0.10.0 storm-hbase
-         component from Maven or other repositories
-         as it expects HBase 0.98.4. -->
-    <!-- uncomment and set version -->
-    <!--
     <dependency>
       <groupId>org.apache.storm</groupId>
       <artifactId>storm-hbase</artifactId>
-      <version>0.10.0.2.4.2.4-5</version>
+      <version>${storm.version}</version>
     </dependency>
-    -->
+<!--
     <dependency>
       <groupId>org.apache.hbase</groupId>
       <artifactId>hbase-common</artifactId>
@@ -84,7 +109,7 @@
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-azure</artifactId>
       <version>2.7.1</version>
-    </dependency>
+    </dependency>-->
     <!-- Socket.io client to communicate with the web dashboard -->
     <dependency>
       <groupId>com.github.nkzawa</groupId>
