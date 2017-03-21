@@ -11,7 +11,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <storm.version>1.0.1.2.5.3.0-37</storm.version>
     <hadoop.version>2.7.2></hadoop.version>
-    <storm.topology>org.apache.storm.flux.Flux</storm.topology>
+    <storm.topology>com.microsoft.examples.Temperature</storm.topology>
   </properties>
   <!-- Hortonworks repositories -->
   <repositories>
@@ -61,11 +61,6 @@
           <artifactId>httpclient</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.storm</groupId>
-      <artifactId>flux-core</artifactId>
-      <version>${storm.version}</version>
     </dependency>
     <!-- Used to read from Azure Event Hubs -->
     <dependency>
@@ -196,10 +191,8 @@
           <include>log4j2.xml</include>
           <!-- HBase configuration -->
           <include>hbase-site.xml</include>
-          <!-- Topology for local testing -->
-          <include>no-hbase.yaml</include>
-          <!-- Topology for use in an environment with Storm and HBase -->
-          <include>with-hbase.yaml</include>
+          <!-- EventHubs config -->
+          <include>Config.properties</include>
         </includes>
       </resource>
     </resources>
