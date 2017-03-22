@@ -85,8 +85,8 @@ public class Temperature
     topologyBuilder.setBolt("Dashboard", new DashboardBolt(dashboardUri), spoutConfig.getPartitionCount())
       .fieldsGrouping("Parser", new Fields("deviceid")).setNumTasks(spoutConfig.getPartitionCount());
     // Create the HBase bolt, which subscribes to the stream from Parser
-    topologyBuilder.setBolt("HBase", new HBaseBolt("SensorData", mapper).withConfigKey("hbase.conf"), spoutConfig.getPartitionCount())
-     .fieldsGrouping("Parser", "hbasestream", new Fields("deviceid")).setNumTasks(spoutConfig.getPartitionCount());
+    // topologyBuilder.setBolt("HBase", new HBaseBolt("SensorData", mapper).withConfigKey("hbase.conf"), spoutConfig.getPartitionCount())
+    //  .fieldsGrouping("Parser", "hbasestream", new Fields("deviceid")).setNumTasks(spoutConfig.getPartitionCount());
     return topologyBuilder.createTopology();
   }
 
