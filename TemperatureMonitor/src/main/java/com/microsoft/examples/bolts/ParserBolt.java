@@ -8,6 +8,7 @@ import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
 
 import org.json.JSONObject;
+import org.json.JSONException;
 
 // For logging
 import org.apache.logging.log4j.Logger;
@@ -41,16 +42,18 @@ public class ParserBolt extends BaseBasicBolt {
     for (String ehm : arr)
     {
         //Convert it from JSON to an object
-        //EventHubMessage msg = new Gson().fromJson(ehm.concat("}"),EventHubMessage.class);
-        JSONObject msg=new JSONObject(ehm.concat("}"));
-        //Pull out the values and emit as a stream
-        String timestamp = msg.getString("TimeStamp");
-        int deviceid = msg.getInt("DeviceId");
-        int temperature = msg.getInt("Temperature");
-        LOG.info("Emitting device id {} with a temperature of {} and timestamp of {}", deviceid, timestamp, temperature);
-
-        collector.emit("hbasestream", new Values(timestamp, deviceid, temperature));
-        collector.emit(new Values(deviceid, temperature));
+        try {
+          JSONObject msg=new JSONObject(ehm.concat("}"));
+          //Pull out the values and emit as a stream
+          String timestamp = msg.getString("TimeStamp");
+          int deviceid = msg.getInt("DeviceId");
+          int temperature = msg.getInt("Temperature");
+          LOG.info("Emitting device id {} with a temperature of {} and timestamp of {}", deviceid, timestamp, temperature);
+          collector.emit("hbasestream", new Values(timestamp, deviceid, temperature));
+          collector.emit(new Values(deviceid, temperature));
+        } catch(JSONException e) {
+          LOG.error("JSONException: " + e);
+        }
     }
   }
 }

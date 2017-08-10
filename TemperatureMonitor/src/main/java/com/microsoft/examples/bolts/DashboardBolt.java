@@ -12,6 +12,7 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONObject;
+import org.json.JSONException;
 
 // For logging
 import org.apache.logging.log4j.Logger;
@@ -60,9 +61,13 @@ public class DashboardBolt extends BaseBasicBolt {
     LOG.info("DeviceID is {}, temperature is {}", deviceid, temperature);
     //Create a JSON object
     JSONObject obj = new JSONObject();
-    obj.put("deviceid", deviceid);
-    obj.put("temperature", temperature);
-    //Send it to the server
-    socket.emit("message", obj);
+    try {
+      obj.put("deviceid", deviceid);
+      obj.put("temperature", temperature);
+      //Send it to the server
+      socket.emit("message", obj);
+    } catch (JSONException e) {
+      LOG.error("JSONException: " + e);
+    }
   }
 }
