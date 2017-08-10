@@ -1,0 +1,58 @@
+---
+# Topology name
+name: "temperaturemonitor"
+
+components:
+  # Configure the Event Hub spout
+  - id: "eventhubspout-config"
+    className: "org.apache.storm.eventhubs.spout.EventHubSpoutConfig"
+    constructorArgs:
+      # These are populated from the .properties file when the topology is started
+      - "${eventhub.read.policy.name}"
+      - "${eventhub.read.policy.key}"
+      - "${eventhub.namespace}"
+      - "${eventhub.name}"
+      - ${eventhub.partitions}
+
+# Topology configuration
+# Passed to the submitter as a map of config options
+config:
+  topology.workers: 1
+
+spouts:
+  - id: "eventhub-spout"
+    className: "org.apache.storm.eventhubs.spout.EventHubSpout"
+    constructorArgs:
+      - ref: "eventhubspout-config" # config declared in components section
+    # parallelism hint. This should be the same as the number of partitions for your Event Hub, so we read it from the dev.properties file passed at run time.
+    parallelism: ${eventhub.partitions}
+
+bolts:
+  # Log information
+  - id: "log-bolt"
+    className: "org.apache.storm.flux.wrappers.bolts.LogInfoBolt"
+    parallelism: 1
+  
+  - id: "parser-bolt"
+    className: "com.microsoft.examples.ParserBolt"
+    parallelism: 1
+
+  - id: "dashboard-bolt"
+    className: "com.microsoft.examples.DashboardBolt"
+    constructorArgs:
+      - "${dashboard.uri}"
+
+
+# How data flows through the components
+streams:
+  - name: "spout -> parser" # just a string used for logging
+    from: "eventhub-spout"
+    to: "parser-bolt"
+    grouping:
+      type: SHUFFLE
+  
+  - name: "parser -> dashboard-bolt"
+    from: "parser-bolt"
+    to: "dashboard-bolt"
+    grouping:
+      type: SHUFFLE
