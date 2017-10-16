@@ -5,9 +5,9 @@ var moment = require('moment');
 // ServiceBus Namespace
 var namespace = 'YourNamespace';
 // Event Hub Name
-var hubname ='sensordata';
+var hubname ='YourHubNmae';
 // Shared access Policy name and key (from Event Hub configuration)
-var my_key_name = 'devices';
+var my_key_name = 'RootManageSharedAccessKey';
 var my_key = 'YourKey';
 
 // Full URI to send messages to the hub
