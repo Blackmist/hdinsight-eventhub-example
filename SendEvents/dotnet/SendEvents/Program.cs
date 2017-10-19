@@ -14,10 +14,10 @@ namespace SendEvents
     {
 
         static int numberOfDevices = 10;
-        static string eventHubName = "temperature";
-        static string eventHubNamespace = "event hub namespace";
-        static string sharedAccessPolicyName = "devices";
-        static string sharedAccessPolicyKey = "key for 'devices' policy";
+        static string eventHubName = "Your event hub name";
+        static string eventHubNamespace = "your event hub namespace";
+        static string sharedAccessPolicyName = "RootManageSharedAccessKey";
+        static string sharedAccessPolicyKey = "key for the RootManageSharedAccessKey policy";
 
         static void Main(string[] args)
         {

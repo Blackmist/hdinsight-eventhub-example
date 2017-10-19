@@ -8,8 +8,8 @@ components:
     className: "org.apache.storm.eventhubs.spout.EventHubSpoutConfig"
     constructorArgs:
       # These are populated from the .properties file when the topology is started
-      - "${eventhub.read.policy.name}"
-      - "${eventhub.read.policy.key}"
+      - "${eventhub.policy.name}"
+      - "${eventhub.policy.key}"
       - "${eventhub.namespace}"
       - "${eventhub.name}"
       - ${eventhub.partitions}
@@ -18,7 +18,7 @@ components:
   - id: "columnFields"
     className: "org.apache.storm.tuple.Fields"
     constructorArgs:
-      - ["timestamp", "temperature"]
+      - ["deviceid", "timestamp", "temperature"]
   
   - id: "mapper"
     className: "org.apache.storm.hbase.bolt.mapper.SimpleHBaseMapper"
@@ -38,6 +38,7 @@ config:
   hbase.conf:
     hbase.rootdir: "${hbase.rootdir}"
     hbase.zookeeper.quorum: "${hbase.zookeeper.quorum}"
+    zookeeper.znode.parent: "/hbase-unsecure" # default znode for hbase
 
 spouts:
   - id: "eventhub-spout"
