@@ -13,7 +13,7 @@
          from the Hortonworks repository -->
     <storm.version>1.1.0.2.6.1.22-1</storm.version>
     <hadoop.version>2.7.3</hadoop.version>
-    <storm.eventhub.version>1.1.0.1</storm.eventhub.version>
+    <storm.eventhub.version>1.1.0.2</storm.eventhub.version>
   </properties>
  <repositories>
     <!-- This repository contains the Event Hub spout/bolt component -->

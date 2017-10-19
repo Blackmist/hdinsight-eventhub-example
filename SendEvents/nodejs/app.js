@@ -3,12 +3,12 @@ var crypto = require('crypto');
 var moment = require('moment');
 
 // ServiceBus Namespace
-var namespace = 'YourNamespace';
+var namespace = 'Your-EventHub-Namespace';
 // Event Hub Name
-var hubname ='YourHubNmae';
+var hubname ='Your-EventHub-Name';
 // Shared access Policy name and key (from Event Hub configuration)
 var my_key_name = 'RootManageSharedAccessKey';
-var my_key = 'YourKey';
+var my_key = 'Key-for-your-RootManageSharedAccessKey';
 
 // Full URI to send messages to the hub
 var my_uri = 'https://' + namespace + '.servicebus.windows.net' + '/' + hubname + '/messages';
@@ -70,7 +70,9 @@ for(var i = 0; i < 10; i++)
 {
 	// Random temperature value
 	var temp = Math.floor(Math.random() * 90);
-	var payload = '{\"TimeStamp\":\"2015-02-10T14:43.05.00320Z\",\"DeviceId\":\"' + i + '\",\"Temperature\":' + temp + '}';
+	// Date time
+	var date = new Date().toISOString();
+	var payload = '{\"TimeStamp\":\"'+ date + '\",\"DeviceId\":\"' + i + '\",\"Temperature\":' + temp + '}';
 	console.log(payload);
 	// Send it
 	send_message(payload);
